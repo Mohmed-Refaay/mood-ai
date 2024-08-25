@@ -36,10 +36,18 @@ export default async function JournalPage() {
               className="bg-white p-4 rounded-xl drop-shadow-md"
             >
               <dl>
-                <dt>Date:</dt>
-                <dd>{new Date(journal.createdAt).toDateString()}</dd>
-                <dt>Summary:</dt>
-                <dd>{journal.content}</dd>
+                <div className="flex gap-4">
+                  <dt>Date:</dt>
+                  <dd>
+                    {new Date(journal.createdAt).toDateString()}
+                  </dd>
+                </div>
+                <div className="flex gap-4">
+                  <dt>Summary:</dt>
+                  <dd className="text-nowrap overflow-hidden text-ellipsis">
+                    {journal.content}
+                  </dd>
+                </div>
               </dl>
             </li>
           </Link>

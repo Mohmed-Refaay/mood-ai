@@ -11,10 +11,12 @@ export function TextEditor({
 }) {
   const router = useRouter();
   const [content, setContent] = useState(entry.content);
+  const [isSaving, setIsSaving] = useState(false);
 
   const saveEntry = async () => {
-    console.log("saving entry", entry.id);
+    setIsSaving(true);
     await updateJournalAPI(entry.id, content);
+    setIsSaving(false);
     router.refresh();
   };
 
@@ -29,11 +31,11 @@ export function TextEditor({
   }, [content]);
 
   return (
-    <div>
+    <div className="relative mt-5 h-full">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full h-40 border p-2 rounded-lg"
+        className="w-full border p-2 rounded-lg resize-none h-full"
         placeholder="Write your thoughts here..."
       ></textarea>
     </div>
