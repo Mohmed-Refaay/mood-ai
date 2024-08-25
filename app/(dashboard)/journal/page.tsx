@@ -1,7 +1,7 @@
 import { CreateNewEntry } from "@/components/CreateNewEntry";
 import { getUser } from "@/utils/auth";
 import { prisma } from "@/utils/db";
-import { Button } from "@mui/joy";
+import Link from "next/link";
 
 async function getJournals() {
   const user = await getUser();
@@ -30,7 +30,19 @@ export default async function JournalPage() {
 
       <ul className="grid grid-cols-3 gap-3">
         {journals.map((journal) => (
-          <li key={journal.id}>{journal.content}</li>
+          <Link href={`/journal/${journal.id}`}>
+            <li
+              key={journal.id}
+              className="bg-white p-4 rounded-xl drop-shadow-md"
+            >
+              <dl>
+                <dt>Date:</dt>
+                <dd>{new Date(journal.createdAt).toDateString()}</dd>
+                <dt>Summary:</dt>
+                <dd>{journal.content}</dd>
+              </dl>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

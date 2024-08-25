@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "./db";
-import { revalidatePath } from "next/cache";
 
 export async function getUser() {
   const { userId } = auth();
@@ -10,8 +9,6 @@ export async function getUser() {
       clerkId: userId as string,
     },
   });
-
-  revalidatePath("/journal");
 
   return user;
 }
