@@ -4,6 +4,8 @@ import { getUser } from "@/utils/auth";
 import { prisma } from "@/utils/db";
 import { PrismaModels } from "@/utils/types";
 import { Button } from "@mui/joy";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 const getEntry = async (id: string) => {
@@ -40,6 +42,17 @@ const addOrGetAnalysis = async (journal: PrismaModels["Journal"]) => {
   });
 };
 
+const deleteEntry = async (formData: FormData) => {
+  "use server";
+  const id = formData.get("id") as string;
+
+  await prisma.journal.delete({ where: { id } });
+
+  revalidatePath("/journal");
+
+  redirect("/journal");
+};
+
 export default async function JournalDetailPage({
   params,
 }: {
@@ -67,7 +80,16 @@ export default async function JournalDetailPage({
   return (
     <div className="flex h-full gap-3">
       <div className="flex-[0.7] flex flex-col">
-        <h1>Journal Detail</h1>
+        <div className="flex items-center justify-between">
+          <h1>Journal Detail</h1>
+
+          <form action={deleteEntry}>
+            <input type="hidden" name="id" value={entry.id} />
+            <Button color="danger" type="submit">
+              Delete
+            </Button>
+          </form>
+        </div>
 
         <TextEditor entry={entry} />
       </div>
@@ -81,7 +103,16 @@ export default async function JournalDetailPage({
           }}
         >
           {details.map((detail) => (
-            <li key={detail} className="flex gap-2">
+            <li
+              key={detail}
+              className="flex gap-2"
+              style={{
+                color: analysis.color,
+                filter: "invert(1) grayscale(1) brightness(1.3) contrast(9000)",
+                mixBlendMode: "luminosity",
+                opacity: 0.9,
+              }}
+            >
               <dt className="capitalize">{detail}:</dt>
               <dd className="capitalize">{analysis[detail].toString()}</dd>
             </li>

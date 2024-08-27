@@ -4,11 +4,7 @@ import { PrismaModels } from "@/utils/types";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
-export function TextEditor({
-  entry,
-}: {
-  entry: PrismaModels["Journal"];
-}) {
+export function TextEditor({ entry }: { entry: PrismaModels["Journal"] }) {
   const router = useRouter();
   const [content, setContent] = useState(entry.content);
   const [isSaving, setIsSaving] = useState(false);
@@ -23,7 +19,7 @@ export function TextEditor({
   useEffect(() => {
     const timeout = setTimeout(() => {
       saveEntry();
-    }, 1000);
+    }, 3000);
 
     return () => {
       clearTimeout(timeout);

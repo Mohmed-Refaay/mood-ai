@@ -1,3 +1,4 @@
+import { analyze } from "@/utils/ai";
 import { prisma } from "@/utils/db";
 
 export async function PATCH(
@@ -14,6 +15,19 @@ export async function PATCH(
       content,
     },
   });
+
+  const analysis = await analyze(content);
+
+  if (analysis.mood !== "unknown") {
+    await prisma.analysis.update({
+      where: {
+        journalId: journal.id,
+      },
+      data: {
+        ...analysis,
+      },
+    });
+  }
 
   return Response.json(journal);
 }

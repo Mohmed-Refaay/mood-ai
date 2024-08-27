@@ -13,6 +13,12 @@ async function getJournals() {
     orderBy: {
       createdAt: "desc",
     },
+    select: {
+      Analysis: true,
+      id: true,
+      createdAt: true,
+      content: true,
+    },
   });
 
   return response;
@@ -38,14 +44,18 @@ export default async function JournalPage() {
               <dl>
                 <div className="flex gap-4">
                   <dt>Date:</dt>
-                  <dd>
-                    {new Date(journal.createdAt).toDateString()}
-                  </dd>
+                  <dd>{new Date(journal.createdAt).toDateString()}</dd>
                 </div>
                 <div className="flex gap-4">
                   <dt>Summary:</dt>
                   <dd className="text-nowrap overflow-hidden text-ellipsis">
-                    {journal.content}
+                    {journal.Analysis?.summary ?? "No summary"}
+                  </dd>
+                </div>
+                <div className="flex gap-4">
+                  <dt>Mood:</dt>
+                  <dd className="text-nowrap overflow-hidden text-ellipsis">
+                    {journal.Analysis?.mood}
                   </dd>
                 </div>
               </dl>
