@@ -17,7 +17,6 @@ export async function PATCH(
   });
 
   const analysis = await analyze(content);
-
   if (analysis.mood !== "unknown") {
     await prisma.analysis.update({
       where: {
