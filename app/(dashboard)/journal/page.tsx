@@ -1,3 +1,4 @@
+import { AskAboutJorunals } from "@/components/AskAboutJorunals";
 import { CreateNewEntry } from "@/components/CreateNewEntry";
 import { getUser } from "@/utils/auth";
 import { prisma } from "@/utils/db";
@@ -29,6 +30,7 @@ export default async function JournalPage() {
 
   return (
     <div className="flex flex-col gap-5">
+      <AskAboutJorunals />
       <div className="flex justify-between items-center">
         <h1 className="text-4xl">Journals</h1>
         <CreateNewEntry />
@@ -44,7 +46,9 @@ export default async function JournalPage() {
               <dl>
                 <div className="flex gap-4">
                   <dt>Date:</dt>
-                  <dd>{new Date(journal.createdAt).toDateString()}</dd>
+                  <dd>
+                    {new Date(journal.createdAt).toDateString()}
+                  </dd>
                 </div>
                 <div className="flex gap-4">
                   <dt>Summary:</dt>
@@ -54,7 +58,7 @@ export default async function JournalPage() {
                 </div>
                 <div className="flex gap-4">
                   <dt>Mood:</dt>
-                  <dd className="text-nowrap overflow-hidden text-ellipsis">
+                  <dd className="capitalize text-nowrap overflow-hidden text-ellipsis">
                     {journal.Analysis?.mood}
                   </dd>
                 </div>
